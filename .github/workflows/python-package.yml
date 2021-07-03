@@ -32,7 +32,3 @@ jobs:
       - name: Lint with pep8
         run: |
           pycodestyle --max-line-length=140 --ignore=E501 --first --statistics postgresql_kernel
-      - name: Unit Test
-        run: |
-          python -m coverage run --source=postgresql_kernel -m unittest discover -v -s . -p *test*.py
-          python -m coverage report
