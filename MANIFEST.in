@@ -2,8 +2,9 @@ include LICENSE
 include README.md
 include CHANGELOG.md
 include requirements.txt
+include postgresql_kernel/images/*.png
 include postgresql_kernel/kernel.json
-recursive-include postgresql_kernel *.pyx *.pxd *.pxi *.py *.c *.h *.temp *.jinja *.png
+recursive-include postgresql_kernel *.pyx *.pxd *.pxi *.py *.c *.h *.temp *.jinja
 prune .git
 prune docs/build
 prune dist
