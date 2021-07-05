@@ -223,12 +223,9 @@ class PostgreSQLKernel(MetaKernel):
             )
 
         switch_bool = (parsed_switch == 'true')
-        committed = self.switch_autocommit(switch_bool)
-        message = (
-            'committed current transaction & ' if committed else '' +
-            'switched autocommit mode to ' +
-            str(self._autocommit)
-        )
+        committed = self.switch_autocommit(switch_bool) | ''
+        message = f'committed current transaction & {committed} switched autocommit mode to {self._autocommit}'
+
         self.send_response(
             self.iopub_socket, 'stream', {
                 'name': 'stderr',
