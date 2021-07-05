@@ -24,7 +24,9 @@ jobs:
         pip install setuptools wheel twine
     - name: Build and publish
       run: |
-        python setup.py sdist bdist_wheel bdist_egg
+        python setup.py sdist
+        python setup.py bdist_wheel --universal
+        python setup.py bdist_egg
     - name: 'Upload dist'
       uses: 'actions/upload-artifact@v2'
       with:
