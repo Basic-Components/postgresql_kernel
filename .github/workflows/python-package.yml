@@ -5,7 +5,7 @@ name: Python package
 
 on:
   push:
-    branches: [master,dev]
+    branches: [master, dev]
   pull_request:
     branches: [master]
 
@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.8, 3.9]
 
     steps:
       - uses: actions/checkout@v2
@@ -32,3 +32,6 @@ jobs:
       - name: Lint with pep8
         run: |
           pycodestyle --max-line-length=140 --ignore=E501 --first --statistics postgresql_kernel
+      - name: Static check with mypy
+        run: |
+          mypy --ignore-missing-imports --show-column-numbers --follow-imports=silent --check-untyped-defs --disallow-untyped-defs --no-implicit-optional --warn-unused-ignores --scripts-are-modules postgresql_kernel
