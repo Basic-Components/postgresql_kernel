@@ -7,7 +7,7 @@ import traceback
 from pathlib import Path
 from select import select
 
-from traitlets import Dict
+from traitlets import Dict as tDict
 from metakernel import MetaKernel, ExceptionWrapper
 # from IPython.display import Image, SVG
 
@@ -15,9 +15,9 @@ from tabulate import tabulate
 import psycopg2
 from psycopg2 import Error, OperationalError
 from psycopg2.extensions import (
-    QueryCanceledError, POLL_OK, POLL_READ, POLL_WRITE, STATUS_BEGIN, Union
+    QueryCanceledError, POLL_OK, POLL_READ, POLL_WRITE, STATUS_BEGIN
 )
-from typing import Any, List, Optional, TypedDict, Iterable, Sequence, Mapping, Union, Tuple
+from typing import Any, List, Optional, TypedDict, Iterable, Sequence, Mapping, Union, Tuple, Dict
 from . import __version__
 
 KernelDictType = TypedDict(
@@ -79,7 +79,7 @@ def get_kernel_json() -> KernelDictType:
     return data
 
 
-def wait_select_inter(conn: psycopg2.connection) -> None:
+def wait_select_inter(conn: "psycopg2.connection") -> None:
     """等待连接建立.
 
     Args:
@@ -111,7 +111,7 @@ class MissingConnection(Exception):
 
 
 class RowsDisplay:
-    def __init__(self, header: Union[str, Mapping[str, str], Sequence[str]], rows: Union[Mapping[str, Iterable], Iterable[Iterable]]) -> None:
+    def __init__(self, header: Union[str, Dict[str, str], Sequence[str]], rows: Union[Mapping[str, Iterable], Iterable[Iterable]]) -> None:
         self.header = header
         self.rows = rows
 
@@ -132,13 +132,13 @@ class PostgreSQLKernel(MetaKernel):
     implementation_version: str = __version__
     language: str = 'sql'
     help_links: List[HelpLinkDictType] = HELP_LINKS
-    kernel_json: Dict = Dict(get_kernel_json()).tag(config=True)
+    kernel_json: tDict = tDict(get_kernel_json()).tag(config=True)
     _language_version: Optional[str] = None
     _banner: Optional[str] = None
 
     _conn_string: str
     _autocommit: bool
-    _conn: Optional[psycopg2.connection]
+    _conn: Optional["psycopg2.connection"]
 
     @property
     def language_version(self) -> str:
@@ -160,7 +160,7 @@ class PostgreSQLKernel(MetaKernel):
             if self._conn is None:
                 return 'not yet connected to a database'
             res = self.fetchone('SELECT VERSION();')
-            if res and len(res) >= 1:
+            if res and len(res) >= 1 and isinstance(res[0], str):
                 self._banner = res[0]
         return self._banner
 

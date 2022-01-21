@@ -19,9 +19,9 @@ keywords: jupyter,jupyter-kernel,postgresql,sql
 1. 加入常用可视化功能
 2. 改用魔术命令配置连接信息
 
-<!-- ## 安装
+## 安装
 
-`pip install postgresql_kernel` -->
+`pip install postgresql_kernel`
 
 ## 使用
 
